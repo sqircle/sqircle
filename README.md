@@ -1,4 +1,1 @@
-sqircle
-=======
-
-Sqircle is new design app -- css meets graphics app. Currently not functional and pre-alpha. Being prototyped in 30 days in the open.
+Sqircle is a new vision for a design app. CSS meets graphics editor. It is being prototyped in one month.
