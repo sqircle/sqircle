@@ -221,3 +221,83 @@ To eliminate confusion UI wise. Canvases should act as containers. i.e you can h
 
 - Brush Tip Preview
 - Brush Type/Name    
+
+
+## Refactor using node-webkit
+
+Will use Node for most of the UI. Can borrow from NoFlo for the Node interface for GEGl.
+
+Then to display image we just need a surface. We can still from MyPaint or a node.js painting app.
+
+We should treat anything drawn in vector as a format that can be thrown into a GEGL/Raster symbol easily.
+If all vectors are SVG. Then just an SVG node?
+
+Every item is a symbol. So dblclick on it and the editor is smart enough just from the class it has to pull up it's souce.
+Where is the source defined? Probably in a YAML file that maps a symbol to it's source file.
+
+We just need to make node-canvas be backed by a GEGL buffer. Then make it infinite.
+
+It might be possible to use gegl as the tile store and simple reqeust from it.
+Or we can just keep track of the tiles by an position width/height etc then request that rectangle. 
+Whenever you pan out of the tiles boundaries one grabs the other segment?
+
+But what about partial tiles? Panning snapping to big squares seems ridicioulousy annoying. Maybe keep tiles really smalL?
+
+Actually what about when we pan we just get the dimensions of where we are and get that rectangle from GEGL?
+Would that perform adequately?
+
+Paper.js has view.scrollBy https://groups.google.com/forum/#!topic/paperjs/rDfaxwEAOlI
+
+This for drawing GEGL to a cairo surface. http://www.spinics.net/lists/gegl/msg01160.html
+
+Symbols can just be elements with a symbol attribute. 
+
+All UI even stuff like layers are Light Table UI elements.
+
+The only thing we need to do then overlay the window for editing a raster element.
+Should be an above the element to leave the mode. Or maybe a little dialog to exit.
+
+Saving should edit the css of the element. All css saves should go to the raw source file and make changes there.
+Then re-eval it.
+
+## Node-webkit
+
+We can utilize Node.js + ClojureScript + Pix.js to build drawing apps. Then we can leverage entire JS ecosystem easily.
+
+Just build everything on top of the browser.
+Since we are native we can resolve the performance issues.
+
+Compiling clojurescript with external libs is easy just do 
+
+(def cats (js/require "cats"))
+
+Which translates to
+
+namespace = {};
+namespace.cats = require("cats");
+
+Or (let [restify (node/require "restify")
+
+Boom!
+
+Then we just run the compiled js through grunt-browserify
+
+
+Use https://github.com/zcaudate/purnam for better interop.
+
+## How to get this done
+
+We need to build up Sqircle as a series of miniapps
+
+1. A node based image editor with filters and an XML format backed by WebGL
+2. Symbol and Asset handling plugin for Light Table
+3. A triangles app
+4. A painting app (should support multiple brush engines)
+5. A vector editor and drawing app
+6. A visual editor for CSS styles/gradients that works with Symbol and Asset plugin
+7. An animation tool
+8. An HSL color picker
+9. Flexible Tabset shapes. 
+10. An image editor with clone tool, smudge tool, layers with blend modes (should be backed by paint app and node image editor)
+
+We should focus on the most experimental and useful stuff first so we can release them as apps.
